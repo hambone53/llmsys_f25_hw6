@@ -75,3 +75,27 @@ pip install -Ue .
 ```sh
 scp -r llmsys_f25_hw5 rhamor@data.bridges2.psc.edu:~/projects/
 ```
+
+## Handling Disk Quota Limit
+
+PSC sets strict 10gb limit for users home folder so user should be mindful and make sure to stay under the limit. If you go to your home folder and use the command
+
+```sh
+du -sh
+```
+
+You will be able to see the current disk usage. Here are some steps to help keep the home folder clean.
+
+1. Clean pip cache
+
+```sh
+pip cache purge
+```
+
+2. Remove old enviornments
+
+```sh
+conda deactivate
+conda env remove --name <enviornment_name>
+```
+
