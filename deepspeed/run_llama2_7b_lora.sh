@@ -28,4 +28,8 @@ deepspeed main.py \
    --zero_stage $ZERO_STAGE \
    --deepspeed \
    --output_dir $OUTPUT \
+   --lora_dim 8 \
+   --only_optimize_lora \
+   --lora_module_name "model.layers." \
+   #--offload \
    #&> $OUTPUT/training.log

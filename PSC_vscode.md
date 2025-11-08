@@ -99,3 +99,10 @@ conda deactivate
 conda env remove --name <enviornment_name>
 ```
 
+## Setting up huggingface paths to point to ocean file storage
+
+```sh
+export HF_HOME=/ocean/projects/cis250159p/rhamor/huggingface
+export HF_HUB_CACHE=/ocean/projects/cis250159p/rhamor/huggingface_cache
+```
+
