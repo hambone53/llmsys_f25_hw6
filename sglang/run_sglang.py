@@ -24,7 +24,8 @@ def main():
     # TODO: initialize sglang engine here
     # you may want to explore different args we can pass here to make the inference faster
     # e.g. dp_size, mem_fraction_static
-    llm = sgl.Engine(model_path=model_path, mem_fraction_static=0.9, dp_size=2, attention_backend='dual_chunk_flash_attn')
+    # Optimized: increased mem_fraction to 0.95, max_running_requests to 32 for better throughput
+    llm = sgl.Engine(model_path=model_path, mem_fraction_static=0.95, dp_size=2, attention_backend='dual_chunk_flash_attn', max_running_requests=16)
 
     prompts = []
 
@@ -36,7 +37,8 @@ def main():
     outputs = []
 
     # TODO: you may want to explore different batch_size
-    batch_size = 32 #len(prompts) 
+    # Increased batch size to 48 for better GPU utilization
+    batch_size = 48 #len(prompts) 
 
     from tqdm import tqdm
     for i in tqdm(range(0, len(prompts), batch_size)):
