@@ -18,13 +18,13 @@ def main():
     )
     args = parser.parse_args()
 
-    dataset = load_dataset("tatsu-lab/alpaca_eval", data_files="alpaca_eval.json", split="eval", trust_remote_code=True)
+    dataset = load_dataset("json", data_files="hf://datasets/tatsu-lab/alpaca_eval/alpaca_eval.json", split="train")
     model_path = args.model_path
 
-    # TODO: initialize sglang egnine here
+    # TODO: initialize sglang engine here
     # you may want to explore different args we can pass here to make the inference faster
     # e.g. dp_size, mem_fraction_static
-    llm = None
+    llm = sgl.Engine(model_path=model_path, mem_fraction_static=0.9, dp_size=2, attention_backend='dual_chunk_flash_attn')
 
     prompts = []
 
@@ -36,13 +36,15 @@ def main():
     outputs = []
 
     # TODO: you may want to explore different batch_size
-    batch_size = len(prompts) 
+    batch_size = 32 #len(prompts) 
 
     from tqdm import tqdm
     for i in tqdm(range(0, len(prompts), batch_size)):
         # TODO: prepare the batched prompts and use llm.generate
         # save the output in outputs
-        pass
+        batch = prompts[i:i + batch_size]
+        batch_outputs = llm.generate(batch)
+        outputs.extend(batch_outputs)
 
     with open(args.output_file, "w") as f:
         for i in range(0, len(outputs), 10):
